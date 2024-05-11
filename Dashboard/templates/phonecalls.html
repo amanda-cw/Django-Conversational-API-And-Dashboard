@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block title %}Page Title{% endblock %}
+
+{% block content %}
+
+{% load static %}
+
+<style>
+    .no-shrink-icon {
+        flex-shrink: 0;
+    }
+</style>
+
+<!-- Page Container START -->
+<div class="page-container">
+
+
+    <!-- Content Wrapper START -->
+    <div class="main-content">
+        <div class="page-header">
+            <h2 class="header-title">Phone Calls</h2>
+            <div class="header-sub-title">
+                <nav class="breadcrumb breadcrumb-dash">
+                    <a href="#" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+                    <a class="breadcrumb-item" href="#">My Phone Calls</a>
+
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5>Phone Calls</h5>
+                        </div>
+                        <div class="m-t-30">
+                            <div class="overflow-y-auto scrollable relative" style="height: 437px">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+
+                                                <th>Lead</th>
+                                                <th>Date Called</th>
+                                                <th class="d-none d-sm-table-cell">Duration</th>
+                                                <th class="d-none d-sm-table-cell">Recieved Text</th>
+                                                <th class="d-none d-sm-table-cell">Voicemail</th>
+                                                <th></th>
+
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            {% if phone_calls %}
+                                            {% for call in phone_calls %}
+                                            <tr>
+                                                <td>
+                                                    <div class="media align-items-center">
+                                                        <div class="avatar avatar-icon avatar-blue no-shrink-icon"
+                                                            style="display: flex;
+                                                                    justify-content: center;
+                                                                    align-items: center;">
+                                                            <i style="font-size: 20px;"
+                                                                class="anticon anticon-user"></i>
+
+                                                        </div>
+                                                        <div class="m-l-10">
+                                                            <span>
+                                                                {{ call.lead.name }}</a></span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    {{ call.datetime }}
+                                                </td>
+                                                <td class="d-none d-sm-table-cell">
+                                                    {% for call_info in call.phonecallinfo_set.all %}
+                                                    {{ call_info.duration }}s
+                                                    {% endfor %}
+                                                </td>
+                                                <td class="d-none d-sm-table-cell">
+
+                                                    {% if call.receive_text_field %}
+                                                    Yes
+                                                    {% else %}
+                                                    No
+                                                    {% endif %}
+
+                                                </td>
+                                                <td class="d-none d-sm-table-cell">
+                                                    {% for call_info in call.phonecallinfo_set.all %}
+                                                    {% if call_info.voicemail%}
+                                                    Yes
+                                                    {% else %}
+                                                    No
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                </td>
+                                                <td>
+                                                    <button
+                                                        onclick="window.location.href='{% url 'showcall' call.pk %}'"
+                                                        class="btn btn-primary m-r-5">Open Call Info</button>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                            {% endif %}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endblock %}

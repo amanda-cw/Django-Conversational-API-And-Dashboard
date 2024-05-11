@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}Page Title{% endblock %}
+
+{% block content %}
+
+{% load static %}
+<style>
+    .no-shrink-icon {
+        flex-shrink: 0;
+    }
+</style>
+<!-- Page Container START -->
+<div class="page-container">
+
+
+    <!-- Content Wrapper START -->
+    <div class="main-content">
+        <div class="page-header">
+            <h2 class="header-title">Leads</h2>
+            <div class="header-sub-title">
+                <nav class="breadcrumb breadcrumb-dash">
+                    <a href="#" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+                    <a class="breadcrumb-item" href="#">My Leads</a>
+
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5>Leads</h5>
+                        </div>
+                        <div class="m-t-30">
+                            <div class="overflow-y-auto scrollable relative" style="height: 437px">
+                                <div class="table-responsive-sm">
+
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th class="d-none d-sm-table-cell">Recent Activity</th>
+                                                <th class="d-none d-sm-table-cell">Date Added</th>
+                                                <th class="d-none d-sm-table-cell">Completed Forms</th>
+                                                <th></th>
+
+                                                <!-- <th style="max-width: 70px"></th> -->
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% if lead_data %}
+                                            {% for lead in lead_data %}
+                                            <tr>
+                                                <td>
+                                                    <div class="media align-items-center">
+                                                        <div class="avatar avatar-icon avatar-geekblue no-shrink-icon"
+                                                            style="display: flex;
+                                                                    justify-content: center;
+                                                                    align-items: center;">
+                                                            <i style="font-size: 20px;"
+                                                                class="anticon anticon-user"></i>
+
+                                                        </div>
+                                                        <div class="m-l-10">
+                                                            <span>{{ lead.name }}</span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="d-none d-sm-table-cell">{{ lead.newest_message.datetime }}
+                                                </td>
+                                                <td class="d-none d-sm-table-cell">{{ lead.oldest_message.datetime }}
+                                                </td>
+                                                <td class="d-none d-sm-table-cell">{{ lead.num_forms }}</td>
+                                                <td>
+                                                    <button onclick="window.location.href='{% url 'myLeads' lead.pk %}'"
+                                                        class="btn btn-primary m-r-5">Open Lead Info</button>
+
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                            {% endif %}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endblock %}

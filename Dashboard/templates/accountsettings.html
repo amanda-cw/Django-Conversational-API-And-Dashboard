@@ -1,0 +1,246 @@
+{% extends 'base.html' %}
+
+{% block title %}Page Title{% endblock %}
+
+{% block content %}
+
+{% load static %}
+
+<!-- Page Container START -->
+<div class="page-container">
+
+
+    <!-- Content Wrapper START -->
+    <div class="main-content">
+        <div class="page-header no-gutters has-tab">
+            <h2 class="font-weight-normal">Setting</h2>
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#tab-account">Account</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#tab-notification">Notification</a>
+                </li>
+            </ul>
+        </div>
+        <div class="container">
+            <div class="tab-content m-t-15">
+                <div class="tab-pane fade show active" id="tab-account">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Basic Infomation</h4>
+                        </div>
+                        <div class="card-body">
+
+
+
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label class="font-weight-semibold" for="email">Account Email:</label>
+                                    <input readonly type="text" class="form-control" id="email" placeholder="email"
+                                        value="{{ email }}">
+                                </div>
+                            </div>
+                            <form>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label class="font-weight-semibold" for="userName">User Name:</label>
+                                        <input type="text" class="form-control" id="userName" placeholder="User Name"
+                                            value="{{ username }}">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <button class="btn btn-primary m-t-30">Change</button>
+                                    </div>
+
+                                </div>
+                            </form>
+
+                            <button class="btn btn-primary m-t-30">Change Your Password</button>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="tab-pane fade" id="tab-notification">
+                    <div class="row">
+                        <div class="col-md-8 mx-auto">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Notification Config</h4>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item p-h-0">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="avatar avatar-icon avatar-blue">
+                                                        <i class="anticon anticon-user"></i>
+                                                    </div>
+
+                                                    <div class="m-l-15">
+                                                        <h5 class="font-weight-semibold m-b-0">Coming Soon!
+                                                        </h5>
+                                                        <p class="m-b-0 font-weight-normal">Choose how you
+                                                            recieve
+                                                            notifications about your account.</p>
+                                                    </div>
+                                                </div>
+                                                <!--
+                                                <div class="d-flex align-items-center">
+                                                    <div class="switch m-t-5 m-l-10">
+                                                        <input type="checkbox" id="switch-config-1" checked>
+                                                        <label for="switch-config-1"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item p-h-0">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="avatar avatar-icon avatar-cyan">
+                                                        <i class="anticon anticon-mobile"></i>
+                                                    </div>
+                                                    <div class="m-l-15">
+                                                        <h5 class="font-weight-semibold m-b-0">Everyone can contact me
+                                                        </h5>
+                                                        <p class="m-b-0 font-weight-normal">Allow any peole to contact.
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="switch m-t-5 m-l-10">
+                                                        <input type="checkbox" id="switch-config-2" checked>
+                                                        <label for="switch-config-2"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item p-h-0">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="avatar avatar-icon avatar-gold">
+                                                        <i class="anticon anticon-environment"></i>
+                                                    </div>
+                                                    <div class="m-l-15">
+                                                        <h5 class="font-weight-semibold m-b-0">Show my location</h5>
+                                                        <p class="m-b-0 font-weight-normal">Turning on Location lets you
+                                                            explore what's around you.</p>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="switch m-t-5 m-l-10">
+                                                        <input type="checkbox" id="switch-config-3">
+                                                        <label for="switch-config-3"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item p-h-0">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="avatar avatar-icon avatar-purple">
+                                                        <i class="anticon anticon-mail"></i>
+                                                    </div>
+                                                    <div class="m-l-15">
+                                                        <h5 class="font-weight-semibold m-b-0">Email Notifications</h5>
+                                                        <p class="m-b-0 font-weight-normal">Receive daily email
+                                                            notifications.</p>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="switch m-t-5 m-l-10">
+                                                        <input type="checkbox" id="switch-config-4" checked>
+                                                        <label for="switch-config-4"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item p-h-0">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="avatar avatar-icon avatar-red">
+                                                        <i class="anticon anticon-question"></i>
+                                                    </div>
+                                                    <div class="m-l-15">
+                                                        <h5 class="font-weight-semibold m-b-0">Unknow Source</h5>
+                                                        <p class="m-b-0 font-weight-normal">Allow all downloads from
+                                                            unknow source.</p>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="switch m-t-5 m-l-10">
+                                                        <input type="checkbox" id="switch-config-5">
+                                                        <label for="switch-config-5"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item p-h-0">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="avatar avatar-icon avatar-green">
+                                                        <i class="anticon anticon-swap"></i>
+                                                    </div>
+                                                    <div class="m-l-15">
+                                                        <h5 class="font-weight-semibold m-b-0">Data Synchronization</h5>
+                                                        <p class="m-b-0 font-weight-normal">Allow data synchronize with
+                                                            cloud server.</p>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="switch m-t-5 m-l-10">
+                                                        <input type="checkbox" id="switch-config-6" checked>
+                                                        <label for="switch-config-6"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item p-h-0">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="avatar avatar-icon avatar-orange">
+                                                        <i class="anticon anticon-usergroup-add"></i>
+                                                    </div>
+                                                    <div class="m-l-15">
+                                                        <h5 class="font-weight-semibold m-b-0">Groups Invitation</h5>
+                                                        <p class="m-b-0 font-weight-normal">Allow any groups invitation
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="switch m-t-5 m-l-10">
+                                                        <input type="checkbox" id="switch-config-7" checked>
+                                                        <label for="switch-config-7"></label>
+                                                    </div>
+                                                </div> -->
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Content Wrapper END -->
+
+    <!-- Footer START -->
+    <footer class="footer">
+        <div class="footer-content justify-content-between">
+            <span>
+                <a href="" class="text-gray m-r-15">Term &amp; Conditions</a>
+                <a href="" class="text-gray">Privacy &amp; Policy</a>
+            </span>
+        </div>
+    </footer>
+    <!-- Footer END -->
+
+</div>
+<!-- Page Container END -->
+
+{% endblock %}

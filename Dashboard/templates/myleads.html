@@ -1,0 +1,320 @@
+{% extends 'base.html' %}
+
+{% block title %}Page Title{% endblock %}
+
+{% block content %}
+
+{% load static %}
+
+
+<!-- Page Container START -->
+<div class="page-container">
+
+
+    <!-- Content Wrapper START -->
+    <div class="main-content">
+        <!-- Debug: This is myleads.html -->
+
+        <div class="page-header">
+            <h2 class="header-title">Lead Profile</h2>
+            <div class="header-sub-title">
+                <nav class="breadcrumb breadcrumb-dash">
+                    <a href="#" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+                    <a class="breadcrumb-item" href="#">My Leads</a>
+                    <span class="breadcrumb-item active">{{ name }}</span>
+                </nav>
+            </div>
+        </div>
+        <div class="container">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-7 col-12">
+                            <div class="d-md-flex align-items-center">
+                                <div class="text-center text-sm-left mx-auto mx-md-0">
+
+                                    <div class="avatar avatar-icon avatar-magenta"
+                                        style="width: 150px; height: 150px; display: flex; justify-content: center; align-items: center;">
+                                        <i style="font-size: 100px;" class="anticon anticon-user"></i>
+                                    </div>
+                                </div>
+                                <div class="text-center text-sm-left m-v-15 p-l-30">
+                                    <div class="lead-header">
+                                        <h2 class="m-b-5">{{ name }}<span id="leadId"></span> <span class="edit-button"
+                                                onclick="editLeadName()">✏️</span></h2>
+                                    </div>
+                                    <p class="text-opacity font-size-13">@{{ token }}</p>
+                                    <div class="edit-input" style="display: none;">
+                                        <form class="form-inline" method="post" action="{% url 'myLeads' id %}"
+                                            onsubmit="return validateForm()">
+                                            <input class="form-control" type="text" name="newLeadName"
+                                                placeholder="Enter a new name" id="newLeadNameInput">
+                                            <button class="btn btn-primary" type="submit">Save</button>
+                                            <p id="error" style="color: red;"></p>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-12">
+                            <div class="row">
+                                <div class="d-md-block d-none border-left col-1"></div>
+                                <div class="col">
+                                    <ul class="list-unstyled m-t-10">
+                                        <li class="row">
+                                            <p class="col-6 col-sm-4 font-weight-semibold text-dark m-b-5">
+                                                <i class="m-r-10 text-primary anticon anticon-mail"></i>
+                                                <span>Platform:</span>
+                                            </p>
+                                            <p class="col-6 col-sm font-weight-semibold">{{ platform }}</p>
+                                        </li>
+                                        <li class="row">
+                                            <p class="col-6 col-sm-4 font-weight-semibold text-dark m-b-5">
+                                                <i class="m-r-10 text-primary anticon anticon-phone"></i>
+                                                <span>Phone:</span>
+                                            </p>
+                                            <p class="col-6 col-sm font-weight-semibold">{{ phone }}</p>
+                                        </li>
+                                        <li class="row">
+                                            <p class="col-6 col-sm-4 font-weight-semibold text-dark m-b-5">
+                                                <i class="m-r-10 text-primary anticon anticon-compass"></i>
+                                                <span>Added:</span>
+                                            </p>
+                                            {% if message_history %}
+                                            <p class="col font-weight-semibold">{{ message_history.0.datetime }}</p>
+                                            {% endif %}
+                                        </li>
+                                    </ul>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-lg-8" style="height: auto;">
+                    <div class="chat chat-app row" style="width: 100%; height: auto; display: flex;">
+                        <div class="chat-content" style="width: 100%">
+                            <div class="conversation">
+                                <div class="conversation-wrapper">
+                                    <div class="conversation-header justify-content-between">
+                                        <div class="media align-items-center">
+
+                                            <div class="avatar avatar-image">
+                                                <div class="avatar avatar-icon avatar-magenta" style="display: flex;
+                                                                justify-content: center;
+                                                                align-items: center;">
+
+                                                    <i style=" font-size: 20px;" class="anticon anticon-user"></i>
+
+                                                </div>
+
+                                            </div>
+                                            <div class="p-l-15">
+                                                <h6 class="m-b-0">{{ name }}</h6>
+                                                <p class="m-b-0 text-muted font-size-13 m-b-0">
+                                                    {% if message_history %}
+                                                    {% for message in message_history %}
+                                                    {% if forloop.last %}
+                                                    <span>Last Message: {{ message.datetime }}</span>
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                    {% endif %}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="dropdown dropdown-animated scale-left">
+                                                        <a class="text-dark font-size-20" href="javascript:void(0);"
+                                                            data-toggle="dropdown">
+                                                            <i class="anticon anticon-setting"></i>
+                                                        </a>
+                                                        <div class="dropdown-menu">
+                                                            <button class="dropdown-item" type="button">Action</button>
+                                                            <button class="dropdown-item" type="button">Another
+                                                                action</button>
+                                                            <button class="dropdown-item" type="button">Something
+                                                                else
+                                                                here</button>
+                                                        </div>
+                                                    </div> -->
+                                    </div>
+                                    <div class="conversation-body">
+                                        {% if message_history %}
+                                        {% for chat in message_history %}
+                                        <!-- user message -->
+                                        <div class="msg msg-recipient">
+                                            <div class="m-r-10">
+                                                <div class="avatar avatar-image">
+                                                    <div class="avatar avatar-icon avatar-magenta" style="display: flex;
+                                                                justify-content: center;
+                                                                align-items: center;">
+
+                                                        <i style=" font-size: 20px;" class="anticon anticon-user"></i>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="bubble">
+                                                <div class="bubble-wrapper">
+
+                                                    <span>
+                                                        {{ chat.message }}
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <p class="m-b-0 text-muted font-size-11 m-b-0" style="margin-top: -15px;">
+
+                                            <span>{{ chat.datetime }}</span>
+                                        </p>
+                                        <div class="msg msg-sent">
+                                            <div class="bubble">
+                                                <div class="bubble-wrapper">
+                                                    <span>{{ chat.response }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                        {% endif %}
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5>Completed Forms</h5>
+                            <div class="accordion borderless" id="accordion-borderless">
+                                {% for form in user_forms %}
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="card-title">
+                                            <a class="collapsed" data-toggle="collapse"
+                                                href="#collapse{{ forloop.counter }}Borderless">
+                                                <span>{{ form.datetime }}</span>
+                                            </a>
+                                        </h5>
+                                    </div>
+                                    <div id="collapse{{ forloop.counter }}Borderless" class="collapse"
+                                        data-parent="#accordion-borderless">
+                                        <div class="card-body">
+                                            <ul style="list-style: none;">
+                                                {% for response in form.formresponse_set.all %}
+                                                <li><b>{{ response.question.question_text }}</b></li>
+                                                <li>{{ response.response }}</li>
+                                                <br>
+                                                {% endfor %}
+                                                <button onclick="window.location.href='{% url 'showform' form.id %}'"
+                                                    class="btn btn-primary m-r-5">Open Form</button>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+
+
+                        </div>
+                        <br>
+                        <div class="card">
+                            <div class="card-body">
+
+                                <h5>Phone Calls</h5>
+
+                                <table class="table table-borderless">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Date</th>
+                                            <th scope="col">Voicemail</th>
+                                            <th scope="col">Duration</th>
+
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% if phone_calls %}
+                                        {% for call in phone_calls %}
+                                        <tr>
+
+                                            <td>
+                                                <a href="{% url 'showcall' call.pk %}">
+                                                    {{ call.datetime|date:"m/d/y"|safe }}
+                                                </a>
+                                            </td>
+                                            <td> {% for call_info in call.phonecallinfo_set.all %}
+                                                {% if call_info.voicemail%}
+                                                Yes
+                                                {% else %}
+                                                No
+                                                {% endif %}
+                                                {% endfor %}</td>
+                                            <td> {% for call_info in call.phonecallinfo_set.all %}
+                                                {{ call_info.duration }}s
+                                                {% endfor %}</td>
+
+                                        </tr>
+                                        {% endfor %}
+                                        {% endif %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+</div>
+</div>
+<!-- Content Wrapper END -->
+<style>
+    .edit-button {
+        cursor: pointer;
+        margin-left: 5px;
+    }
+
+    .edit-input {
+        display: none;
+        margin-top: 10px;
+    }
+</style>
+
+<script>
+    function editLeadName() {
+        const leadId = document.getElementById('leadId');
+        const editInput = document.querySelector('.edit-input');
+
+        // Hide the lead header and display the input field
+        leadId.style.display = 'none';
+        editInput.style.display = 'block';
+    }
+    function validateForm() {
+        const newLeadNameInput = document.getElementById('newLeadNameInput');
+
+        // Check if the input is blank or contains only whitespace
+        if (newLeadNameInput.value.trim() === '') {
+            const error = document.getElementById('error');
+            error.innerHTML = "Please enter a valid name"
+            return false; // Prevent form submission
+        }
+
+        return true; // Allow form submission
+    }
+</script>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,5 @@
+This is the file where you store your prompt for ChatGPT.
+We are saving the prompt in a .txt file so it can be as long as possible,
+without taking up unnecessary space in our views.py. 
+It can be anything you want. You should save important business information in here that you want it to answer from, 
+and any other aspects of its behavior. 

@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}Page Title{% endblock %}
+
+{% block content %}
+
+{% load static %}
+
+<!-- Page Container START -->
+<div class="page-container">
+
+
+    <!-- Content Wrapper START -->
+    <div class="main-content">
+        <div class="page-header">
+            <h2 class="header-title">Calls</h2>
+            <div class="header-sub-title">
+                <nav class="breadcrumb breadcrumb-dash">
+                    <a href="#" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+                    <a class="breadcrumb-item" href="#">Calls</a>
+                    <span class="breadcrumb-item active">Call #1</span>
+                </nav>
+            </div>
+        </div>
+        {% if call %}
+        <div class="card">
+            <div class="card-body">
+                <h4>Phone Call on {{ call.datetime }}
+                </h4>
+                <p> {{ call.lead.name }}</p>
+                <button onclick="window.location.href='{% url 'myLeads' call.lead.pk %}'"
+                    class="btn btn-primary m-r-5">Open Lead Info</button>
+                <div class="m-t-25">
+                    <p><b>From: </span></b>{{ call.from_field }}</p>
+                    <p> <b><span>Duration: </span></b> {% for call_info in call.phonecallinfo_set.all %}
+                        {{ call_info.duration }}s
+                        {% endfor %}</p>
+                    <p><b><span>Recieved Opt-In Text: </span></b>
+                        {% if call.receive_text_field %}
+                        Yes
+                        {% else %}
+                        No
+                        {% endif %}</p>
+                    <p><b><span>Left Voicemail: </span></b> {% for call_info in call.phonecallinfo_set.all %}
+                        {% if call_info.voicemail%}
+                        Yes
+
+
+
+
+
+
+
+
+
+                        {% else %}
+                        No
+                        {% endif %}
+                    </p>
+                    {% if audio_data %}
+                    <audio controls>
+                        <source src="data:audio/wav;base64,{{ audio_data }}" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                    {% endif %}
+                    {% endfor %}
+
+
+
+                </div>
+
+
+
+            </div>
+            {% endif %}
+
+            {% endblock %}

@@ -1,0 +1,323 @@
+{% extends 'base.html' %}
+
+{% block title %}Page Title{% endblock %}
+
+{% block content %}
+
+{% load static %}
+
+<style>
+    .custom-spacing {
+        margin-bottom: 35px;
+        /* Adjust as needed */
+
+        /* Define a custom CSS class for spacing between buttons */
+        .spaced-button {
+            margin-right: 5px;
+            /* Adjust the margin as needed for spacing */
+        }
+
+    }
+
+    /* CSS for the animation */
+    .question {
+        transition: transform 0.3s ease-in-out;
+        will-change: transform;
+    }
+
+    .move-up {
+        transform: translateY(-50px);
+    }
+
+    .move-down {
+        transform: translateY(50px);
+    }
+</style>
+
+<!-- Page Container START -->
+<div class="page-container">
+
+
+    <!-- Content Wrapper START -->
+    <div class="main-content">
+        <div class="page-header">
+            <h2 class="header-title">Settings</h2>
+            <div class="header-sub-title">
+                <nav class="breadcrumb breadcrumb-dash">
+                    <a href="#" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+                    <a href="#" class="breadcrumb-item"></i>Settings</a>
+                    <a class="breadcrumb-item" href="#">Form Questions</a>
+
+                </nav>
+            </div>
+        </div>
+        {% if voicemail_error %}
+        <p style="color: red; font-size: 15px;"><b>{{ voicemail_error }}</b></p>
+        {% endif %}
+        {% if form_error %}
+        <p style="color: red; font-size: 15px;"><b>{{ form_error }}</b></p>
+        {% endif %}
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Form Questions</h4>
+                <lead>
+                    Enter your form questions here. To add new questions, click "Add Question".
+                    <br>
+                    To save and update your form questions, click "Save".
+                    <br>
+
+                    <br>
+
+                </lead>
+                <br>
+                <form method="POST" action="/dashboard/settings/formquestions">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <div id="question-fields">
+                        <!-- Existing questions will be displayed here -->
+                        {% if questions %}
+                        {% for item in questions %}
+                        <div class="question row custom-spacing" data-question-id=" {{ forloop.counter }}"
+                            id="question-{{ forloop.counter }}">
+                            <div class="col-sm-2">
+                                <span style="color: black; " class="question-number">
+                                    Question {{ forloop.counter }}
+                                </span>
+                            </div>
+
+                            <div class="col-md-5">
+                                <textarea class="form-control col-12"
+                                    name="question">{{ item.question_text }}</textarea>
+
+                            </div>
+
+                            <div class="col-md-2">
+                                <!-- "Up" button -->
+                                <button type="button" class="btn btn-sm btn-primary move-up-button"
+                                    data-question-id="question-{{ forloop.counter }}">
+                                    <i class="fas fa-arrow-up"></i>
+                                </button>
+
+                                <!-- "Down" button -->
+                                <button type="button" class="btn btn-sm btn-primary move-down-button"
+                                    data-question-id="question-{{ forloop.counter }}">
+                                    <i class="fas fa-arrow-down"></i>
+                                </button>
+
+                                <button type="button" class="btn btn-sm btn-danger delete-question"
+                                    data-question-id="question-{{ forloop.counter }}">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+
+                        </div>
+
+                        {% endfor %}
+                        {% endif %}
+
+
+
+                    </div>
+
+                    <br>
+                    <input class="btn btn-primary" type="submit" value="Save">
+                    <button class="btn btn-light" type="button" id="add-question"> + Add Question</button>
+
+                    <br>
+                </form>
+                {% if form_error %}
+                <p style="color: red;"><b>{{ form_error }}</b></p>
+                {% endif %}
+                <br>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<script>
+
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Get all delete buttons
+        var deleteButtons = document.querySelectorAll('.delete-question');
+
+        // Attach click event listener to each delete button
+        deleteButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                // Get the question ID from the data-question-id attribute
+                var questionId = this.getAttribute('data-question-id');
+                console.log("removed?")
+                // Call the deleteQuestion function
+                console.log("questionId: " + questionId);
+
+                deleteQuestion(questionId);
+
+            });
+        });
+
+        function deleteQuestion(questionId) {
+            var questionDiv = document.getElementById(questionId);
+            console.log("questionId: " + questionId);
+
+            if (questionDiv) {
+                console.log("removed?")
+                questionDiv.remove();
+
+            }
+        }
+        // Function to move a question up
+        function moveQuestionUp(questionId) {
+            const questionDiv = document.querySelector(`[data-question-id="${questionId}"]`);
+            console.log('test 3')
+            if (questionDiv && questionDiv.previousElementSibling) {
+                const previousDiv = questionDiv.previousElementSibling;
+                questionDiv.classList.add('move-up');
+                console.log('test 4')
+                setTimeout(() => {
+                    questionDiv.parentNode.insertBefore(questionDiv, previousDiv);
+                    questionDiv.classList.remove('move-up');
+                }, 300); // Adjust the time to match the transition duration
+            }
+        }
+
+        function moveQuestionDown(questionId) {
+            const questionDiv = document.querySelector(`[data-question-id="${questionId}"]`);
+            if (questionDiv && questionDiv.nextElementSibling) {
+                const nextDiv = questionDiv.nextElementSibling;
+                questionDiv.classList.add('move-down');
+                setTimeout(() => {
+                    questionDiv.parentNode.insertBefore(nextDiv, questionDiv);
+                    questionDiv.classList.remove('move-down');
+                }, 300); // Adjust the time to match the transition duration
+            }
+        }
+
+        document.addEventListener('click', function (event) {
+            if (event.target.classList.contains('move-up-button')) {
+                const questionId = event.target.closest('.question').getAttribute('data-question-id');
+                moveQuestionUp(questionId);
+            } else if (event.target.classList.contains('move-down-button')) {
+                const questionId = event.target.closest('.question').getAttribute('data-question-id');
+                moveQuestionDown(questionId);
+            }
+        });
+
+        // Attach event listener to a parent container that always exists in the DOM
+        document.addEventListener('click', function (event) {
+            const target = event.target;
+
+            if (target.classList.contains('move-up-button')) {
+                const questionId = target.getAttribute('data-question-id');
+                moveQuestionUp(questionId);
+            } else if (target.classList.contains('move-down-button')) {
+                const questionId = target.getAttribute('data-question-id');
+                moveQuestionDown(questionId);
+            } else if (target.classList.contains('delete-question')) {
+                const questionId = target.getAttribute('data-question-id');
+                deleteQuestion(questionId);
+            }
+        });
+
+
+
+        let questionCounter = $('.question.row').length;
+        const addQuestionButton = document.getElementById('add-question');
+        const questionFields = document.getElementById('question-fields');
+
+        addQuestionButton.addEventListener('click', () => {
+            questionCounter++;
+
+            // Create a new question div
+            const newQuestionDiv = document.createElement('div');
+            newQuestionDiv.className = 'question row custom-spacing';
+            newQuestionDiv.id = `question-${questionCounter}`; // Set the ID based on the counter
+
+            // Create a div for the question number with 'col-sm-2' class
+            const questionNumberDiv = document.createElement('div');
+            questionNumberDiv.className = 'col-sm-2';
+
+            // Create a span for the question number
+            const questionNumberSpan = document.createElement('span');
+            questionNumberSpan.style.color = 'black';
+            questionNumberSpan.className = 'question-number';
+            questionNumberSpan.innerText = `Question ${questionCounter}`;
+
+            // Create a div to contain the textarea and apply Bootstrap classes
+            const textareaDiv = document.createElement('div');
+            textareaDiv.className = 'col-md-5';
+
+            // Create a textarea for the question
+            const newQuestionTextarea = document.createElement('textarea');
+            newQuestionTextarea.className = 'form-control col-12';
+            newQuestionTextarea.name = 'question'; // Set the name attribute as needed
+            // You can also set the text content for the textarea if required.
+
+            // Create a div for the buttons with 'col-md-2' class
+            const buttonsDiv = document.createElement('div');
+            buttonsDiv.className = 'col-md-2';
+
+            // Create the "Up" button
+            const upButton = document.createElement('button');
+            upButton.type = 'button';
+            upButton.className = 'btn btn-sm btn-primary move-up-button spaced-button';
+            upButton.dataset.questionId = `question-${questionCounter}`;
+            upButton.innerHTML = '<i class="fas fa-arrow-up"></i>'; // Up arrow icon
+            upButton.addEventListener('click', function (event) {
+                const questionId = event.target.getAttribute('data-question-id');
+                moveQuestionUp(questionId);
+            });
+
+            // Create the "Down" button
+            const downButton = document.createElement('button');
+            downButton.type = 'button';
+            downButton.className = 'btn btn-sm btn-primary move-down-button spaced-button';
+            downButton.dataset.questionId = `question-${questionCounter}`;
+            downButton.innerHTML = '<i class="fas fa-arrow-down"></i>'; // Down arrow icon
+            downButton.addEventListener('click', function (event) {
+                const questionId = event.target.getAttribute('data-question-id');
+                moveQuestionDown(questionId);
+            });
+
+
+            // Create the "Delete" button
+            const deleteButton = document.createElement('button');
+            deleteButton.type = 'button';
+            deleteButton.className = 'btn btn-sm btn-danger delete-question';
+            deleteButton.dataset.questionId = `question-${questionCounter}`;
+            deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
+
+            // Append the buttons to the buttonsDiv
+            buttonsDiv.appendChild(upButton);
+            buttonsDiv.appendChild(downButton);
+            buttonsDiv.appendChild(deleteButton);
+
+
+            // Append the question number span to the questionNumberDiv
+            questionNumberDiv.appendChild(questionNumberSpan);
+
+            // Append the questionNumberDiv and textarea to the new question div
+            newQuestionDiv.appendChild(questionNumberDiv);
+            textareaDiv.appendChild(newQuestionTextarea);
+            newQuestionDiv.appendChild(textareaDiv);
+            // Append buttonsDiv to the question div
+            newQuestionDiv.appendChild(buttonsDiv);
+
+            // Append the new question div to the questionFields container
+            questionFields.appendChild(newQuestionDiv);
+
+
+        });
+
+        // Add any other JavaScript functionality you need.
+    });
+</script>
+
+
+
+
+
+{% endblock content %}

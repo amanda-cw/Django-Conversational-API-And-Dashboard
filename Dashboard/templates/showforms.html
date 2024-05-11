@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Page Title{% endblock %}
+
+{% block content %}
+
+{% load static %}
+
+<!-- Page Container START -->
+<div class="page-container">
+
+
+    <!-- Content Wrapper START -->
+    <div class="main-content">
+        <div class="page-header">
+            <h2 class="header-title">Forms</h2>
+            <div class="header-sub-title">
+                <nav class="breadcrumb breadcrumb-dash">
+                    <a href="#" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+                    <a class="breadcrumb-item" href="#">Forms</a>
+                    {% if form %}
+                    <span class="breadcrumb-item active">Form #{{ form.pk }}</span>
+                </nav>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4>Estimate Form For {{ form.user.name }}</a>
+                </h4>
+                <button onclick="window.location.href='{% url 'myLeads' form.user.pk %}'"
+                    class="btn btn-primary m-r-5">Open Lead Info</button>
+                <p>Form completed on {{ form.datetime }}</p>
+                <div class="m-t-25">
+                    {% for response in responses %}
+
+                    <b><span>Question: {{ response.question.question_text }}</span></b>
+                    <p>{{ response.response }}</p>
+
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% endblock %}

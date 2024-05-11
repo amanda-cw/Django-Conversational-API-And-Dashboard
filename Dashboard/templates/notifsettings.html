@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block title %}Page Title{% endblock %}
+
+{% block content %}
+
+{% load static %}
+
+<!-- Page Container START -->
+<div class="page-container">
+
+
+    <!-- Content Wrapper START -->
+    <div class="main-content">
+        <div class="page-header">
+            <h2 class="header-title">Settings</h2>
+            <div class="header-sub-title">
+                <nav class="breadcrumb breadcrumb-dash">
+                    <a href="#" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+                    <a href="#" class="breadcrumb-item"></i>Settings</a>
+                    <a class="breadcrumb-item" href="#">Notifications</a>
+
+                </nav>
+            </div>
+        </div>
+        {% if voicemail_error %}
+        <p style="color: red; font-size: 15px;"><b>{{ voicemail_error }}</b></p>
+        {% endif %}
+        {% if form_error %}
+        <p style="color: red; font-size: 15px;"><b>{{ form_error }}</b></p>
+        {% endif %}
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Form Notifications</h4>
+                <lead>
+                    Who will get notified when a potential customer has completed a form? Recipients will recieve a text
+                    and email containing all the form questions and answers and the date of submission.
+                    <br>
+                    <br>
+                    <b>Enter in all recipients below
+                        separated by commas.</b>
+                    <br>
+                    <br>
+                    <i>Ex: user1@gmail.com, user2@gmail.com</i>
+                </lead>
+                {% if form_error %}
+                <p style="color: red;"><b>{{ form_error }}</b></p>
+                {% endif %}
+            </div>
+            {% if settings %}
+            <div class="card-body">
+                <form action="/dashboard/settings/notifications" method="POST">
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label class="font-weight-semibold" for="fullAddress">Email Recipients:</label>
+                            <input value="{{ settings.form_email }}" type="text" class="form-control" id="form_emails"
+                                name="form_emails" placeholder="user1@gmail.com, user2@gmail.com">
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="font-weight-semibold" for="fullAddress">Phone Recipients:</label>
+                            <input value="{{ settings.form_phone }}" name="form_phones" type="text" class="form-control"
+                                id="form_phones" placeholder="+15555555, +15555555">
+                        </div>
+                        <button class="btn btn-primary">Save</button>
+
+
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Voicemail Notifications</h4>
+                <lead>
+                    Who will get notified when a potential customer has left you a voicemail?
+                    Recipients will recieve an email containing the voicemail audio recording, and a text containing the
+                    transcribed audio.
+                    <br>
+                    <br>
+                    <b>Enter in all recipients below
+                        separated by commas.</b>
+                    <br>
+                    <br>
+                    <i>Ex: user1@gmail.com, user2@gmail.com</i>
+                </lead>
+                {% if voicemail_error %}
+                <p style="color: red;"><b>{{ voicemail_error }}</b></p>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                <form action="/dashboard/settings/notifications" method="POST">
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label class="font-weight-semibold" for="fullAddress">Email Recipients:</label>
+                            <input value="{{ settings.voicemail_email }}" type="text" class="form-control"
+                                id="voicemail_emails" name="voicemail_emails"
+                                placeholder="user1@gmail.com, user2@gmail.com">
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="font-weight-semibold" for="fullAddress">Phone Recipients:</label>
+                            <input value="{{ settings.voicemail_phone }}" type="text" class="form-control"
+                                id="voicemail_phones" name="voicemail_phones" placeholder="+15555555, +15555555">
+                        </div>
+                        <button class="btn btn-primary">Save</button>
+
+
+                    </div>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

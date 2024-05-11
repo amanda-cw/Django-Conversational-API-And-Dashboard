@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}Page Title{% endblock %}
+
+{% block content %}
+
+{% load static %}
+
+<!-- Page Container START -->
+<div class="page-container">
+
+
+    <!-- Content Wrapper START -->
+    <div class="main-content">
+        <div class="page-header">
+            <h2 class="header-title">Settings</h2>
+            <div class="header-sub-title">
+                <nav class="breadcrumb breadcrumb-dash">
+                    <a href="#" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+                    <a href="#" class="breadcrumb-item"></i>Settings</a>
+                    <a class="breadcrumb-item" href="#">Notifications</a>
+
+                </nav>
+            </div>
+        </div>
+        {% if voicemail_error %}
+        <p style="color: red; font-size: 15px;"><b>{{ voicemail_error }}</b></p>
+        {% endif %}
+        {% if form_error %}
+        <p style="color: red; font-size: 15px;"><b>{{ form_error }}</b></p>
+        {% endif %}
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">First Opt-In Text Message:</h4>
+                <lead>
+                    This is the message that users recieve when you miss a call. This message, by default,
+                    should contain a brief hello, and an explanation of how to trigger the form.
+                    <br>
+                    <br>
+                    <i>Example: "Hi, this is an AI assistant! Thank you so much for reaching out. If you want to
+                        fill out an estimate form, just say "Estimate". Feel free to ask me any questions about
+                        our services!"</i>
+                </lead>
+                {% if form_error %}
+                <p style="color: red;"><b>{{ form_error }}</b></p>
+                {% endif %}
+            </div>
+
+            <div class="card-body">
+                <form action="/dashboard/settings/messages" method="POST">
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label class="font-weight-semibold" for="fullAddress">Type Message Here:</label>
+
+                            <textarea placeholder="Hi, thanks for reaching out!" class="form-control col-md-12"
+                                name="first_message" id="first_message">{{ settings.first_message }}
+
+                                </textarea>
+                        </div>
+
+                        <button class="btn btn-primary">Save</button>
+
+
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Estimate Completion Message:</h4>
+                <lead>
+                    This is the message that users get when they've finished filling out an estimate form. You can thank
+                    them for reaching out and tell them any further action they could take. Consider attaching links to
+                    websites or calenders to schedule appointments.
+                    <br>
+                    <br>
+                    <i>Example: "Thanks for filling out the estimate form! We will get back to you as soon as possible!
+                        In the meantime, feel free to ask us any more questions. If you want to learn more, visit our
+                        website at www.example.com"</i>
+                </lead>
+                {% if form_error %}
+                <p style="color: red;"><b>{{ form_error }}</b></p>
+                {% endif %}
+            </div>
+
+            <div class="card-body">
+                <form action="/dashboard/settings/messages" method="POST">
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label class="font-weight-semibold" for="fullAddress">Type Message Here:</label>
+
+                            <textarea
+                                placeholder="Thank you for completing your estimate form. We will get back to you as soon as possible!"
+                                class="form-control col-12" name="estimate_complete_message"
+                                id="estimate_complete_message">{{ settings.estimate_complete_message }}
+
+                                </textarea>
+                        </div>
+
+                        <button class="btn btn-primary">Save</button>
+
+
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock content %}
