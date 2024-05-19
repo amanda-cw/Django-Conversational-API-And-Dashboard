@@ -2,6 +2,8 @@
 
 This project is a web application built with Django, integrating OpenAI and Twilio to deliver a robust lead management system. It includes REST APIs, a customizable dashboard, and lead capture features. This application is intended to help service-based business owners automate the process of answering incoming inquiries and collecting responses to estimate requests forms.
 
+  ![Project Demo](static/readme/demovideo.mp4)
+
 ## Project Structure
 
 ### DjangoAPI
